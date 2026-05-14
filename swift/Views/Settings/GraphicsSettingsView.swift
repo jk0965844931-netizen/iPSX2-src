@@ -21,15 +21,15 @@ struct GraphicsSettingsView: View {
 
             Section("Upscaling") {
                 Picker("Internal Resolution", selection: $settings.upscaleMultiplier) {
-                    Text("1x Native (512x448)").tag(Float(1.0))
-                    Text("2x (1024x896)").tag(Float(2.0))
-                    Text("3x (1536x1344)").tag(Float(3.0))
-                    Text("4x (2048x1792)").tag(Float(4.0))
-                    Text("5x (2560x2240)").tag(Float(5.0))
-                    Text("6x (3072x2688)").tag(Float(6.0))
-                    Text("8x (4096x3584)").tag(Float(8.0))
+                    Text("1x Native — Best performance").tag(Float(1.0))
+                    Text("2x — Good balance (A14+)").tag(Float(2.0))
+                    Text("3x — High quality (A15+)").tag(Float(3.0))
+                    Text("4x — Very high (A17 Pro / M-series)").tag(Float(4.0))
+                    Text("5x — Ultra (M-series only)").tag(Float(5.0))
+                    Text("6x — Extreme (M2+ only)").tag(Float(6.0))
+                    Text("8x — Max (M3+ only)").tag(Float(8.0))
                 }
-                Text("Higher values improve visual quality but reduce performance significantly. 4x+ recommended for A17 Pro / M-series. Requires restart.")
+                Text("Start at 1x or 2x for best FPS. Increase only if your device runs smoothly. Requires restart.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -110,7 +110,7 @@ struct GraphicsSettingsView: View {
 
             Section("VSync") {
                 Stepper("Queue Size: \(settings.vsyncQueueSize)", value: $settings.vsyncQueueSize, in: 2...16)
-                Text("Higher values reduce frame drops but increase latency.")
+                Text("2–3 = lower latency (recommended). 4–8 = smoother but more input lag. Reduce if game feels delayed.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
