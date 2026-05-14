@@ -62,6 +62,12 @@ final class SettingsStore: @unchecked Sendable {
     var intcStat: Bool {
         didSet { iPSX2Bridge.setINIBool("EmuCore/Speedhacks", key: "IntcStat", value: intcStat) }
     }
+    var vuFlagHack: Bool {
+        didSet { iPSX2Bridge.setINIBool("EmuCore/Speedhacks", key: "vuFlagHack", value: vuFlagHack) }
+    }
+    var eeCycleSkip: Int {
+        didSet { iPSX2Bridge.setINIInt("EmuCore/Speedhacks", key: "EECycleSkip", value: Int32(clamping: eeCycleSkip)) }
+    }
 
     // ── Graphics ──
     var renderer: Int {
@@ -145,6 +151,8 @@ final class SettingsStore: @unchecked Sendable {
         vu1Instant = iPSX2Bridge.getINIBool("EmuCore/Speedhacks", key: "vu1Instant", defaultValue: true)
         waitLoop = iPSX2Bridge.getINIBool("EmuCore/Speedhacks", key: "WaitLoop", defaultValue: true)
         intcStat = iPSX2Bridge.getINIBool("EmuCore/Speedhacks", key: "IntcStat", defaultValue: true)
+        vuFlagHack = iPSX2Bridge.getINIBool("EmuCore/Speedhacks", key: "vuFlagHack", defaultValue: true)
+        eeCycleSkip = Int(iPSX2Bridge.getINIInt("EmuCore/Speedhacks", key: "EECycleSkip", defaultValue: 0))
         // Graphics
         renderer = Int(iPSX2Bridge.getINIInt("EmuCore/GS", key: "Renderer", defaultValue: 17))
         upscaleMultiplier = iPSX2Bridge.getINIFloat("EmuCore/GS", key: "upscale_multiplier", defaultValue: 1.0)
@@ -186,6 +194,8 @@ final class SettingsStore: @unchecked Sendable {
         vu1Instant = iPSX2Bridge.getINIBool("EmuCore/Speedhacks", key: "vu1Instant", defaultValue: true)
         waitLoop = iPSX2Bridge.getINIBool("EmuCore/Speedhacks", key: "WaitLoop", defaultValue: true)
         intcStat = iPSX2Bridge.getINIBool("EmuCore/Speedhacks", key: "IntcStat", defaultValue: true)
+        vuFlagHack = iPSX2Bridge.getINIBool("EmuCore/Speedhacks", key: "vuFlagHack", defaultValue: true)
+        eeCycleSkip = Int(iPSX2Bridge.getINIInt("EmuCore/Speedhacks", key: "EECycleSkip", defaultValue: 0))
         renderer = Int(iPSX2Bridge.getINIInt("EmuCore/GS", key: "Renderer", defaultValue: 17))
         upscaleMultiplier = iPSX2Bridge.getINIFloat("EmuCore/GS", key: "upscale_multiplier", defaultValue: 1.0)
         vsyncQueueSize = Int(iPSX2Bridge.getINIInt("EmuCore/GS", key: "VsyncQueueSize", defaultValue: 3))
@@ -235,9 +245,11 @@ final class SettingsStore: @unchecked Sendable {
         fastmem = true
         fastCDVD = true         // iPSX2 default: faster disc reads
         eeCycleRate = 0
+        eeCycleSkip = 0
         vu1Instant = true       // PC PCSX2 recommended default
         waitLoop = true         // PC PCSX2 recommended default
         intcStat = true         // PC PCSX2 recommended default
+        vuFlagHack = true       // iPSX2 default: microVU flag hack
     }
 
     /// Reset graphics settings to PC PCSX2 defaults
