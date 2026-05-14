@@ -887,12 +887,19 @@ INISettingsInterface* g_p44_settings_interface = nullptr;
             s_settings_interface->SetIntValue("EmuCore/GS", "deinterlace_mode", 7);
 
             // Speedhacks — all safe PCSX2-recommended defaults for best performance
-            s_settings_interface->SetBoolValue("EmuCore/Speedhacks", "MTVU", false); // known buggy on iOS
+            s_settings_interface->SetBoolValue("EmuCore/Speedhacks", "MTVU", false);      // known buggy on iOS
             s_settings_interface->SetBoolValue("EmuCore/Speedhacks", "fastCDVD", true);   // faster disc reads
             s_settings_interface->SetBoolValue("EmuCore/Speedhacks", "vu1Instant", true); // VU1 instant mode
             s_settings_interface->SetBoolValue("EmuCore/Speedhacks", "WaitLoop", true);   // idle loop detection
             s_settings_interface->SetBoolValue("EmuCore/Speedhacks", "IntcStat", true);   // INTC stat hack
+            s_settings_interface->SetBoolValue("EmuCore/Speedhacks", "vuFlagHack", true); // microVU flag hack (~5-10% speedup)
             s_settings_interface->SetIntValue("EmuCore/Speedhacks", "EECycleRate", 0);    // default cycle rate
+            s_settings_interface->SetIntValue("EmuCore/Speedhacks", "EECycleSkip", 0);    // no cycle skip by default
+
+            // Audio — reduced latency for tighter AV sync on iOS
+            s_settings_interface->SetIntValue("SPU2/Output", "BufferMS", 30);             // 30ms buffer (default 50ms)
+            s_settings_interface->SetBoolValue("SPU2/Output", "MinimalOutputLatency", true); // reduce audio latency
+            s_settings_interface->SetBoolValue("SPU2/Stretch", "UseQuickSeek", true);     // faster TimeStretch
             
             Console.WriteLn("@@CFG_DEFAULTS@@ created=1 CoreType=0 UseArm64Dynarec=false EnableEE=1 fastCDVD=1 vu1Instant=1 WaitLoop=1 IntcStat=1");
             s_settings_interface->Save();
@@ -912,6 +919,35 @@ INISettingsInterface* g_p44_settings_interface = nullptr;
     }
     if (!s_settings_interface->ContainsValue("EmuCore/CPU", "ExtraMemory")) {
         s_settings_interface->SetBoolValue("EmuCore/CPU", "ExtraMemory", false);
+    }
+    // [Migrate] Speedhacks that were missing from earlier builds
+    if (!s_settings_interface->ContainsValue("EmuCore/Speedhacks", "fastCDVD")) {
+        s_settings_interface->SetBoolValue("EmuCore/Speedhacks", "fastCDVD", true);
+    }
+    if (!s_settings_interface->ContainsValue("EmuCore/Speedhacks", "vu1Instant")) {
+        s_settings_interface->SetBoolValue("EmuCore/Speedhacks", "vu1Instant", true);
+    }
+    if (!s_settings_interface->ContainsValue("EmuCore/Speedhacks", "WaitLoop")) {
+        s_settings_interface->SetBoolValue("EmuCore/Speedhacks", "WaitLoop", true);
+    }
+    if (!s_settings_interface->ContainsValue("EmuCore/Speedhacks", "IntcStat")) {
+        s_settings_interface->SetBoolValue("EmuCore/Speedhacks", "IntcStat", true);
+    }
+    if (!s_settings_interface->ContainsValue("EmuCore/Speedhacks", "vuFlagHack")) {
+        s_settings_interface->SetBoolValue("EmuCore/Speedhacks", "vuFlagHack", true);
+    }
+    if (!s_settings_interface->ContainsValue("EmuCore/CPU/Recompiler", "EnableFastmem")) {
+        s_settings_interface->SetBoolValue("EmuCore/CPU/Recompiler", "EnableFastmem", true);
+    }
+    // [Migrate] Audio latency optimizations
+    if (!s_settings_interface->ContainsValue("SPU2/Output", "BufferMS")) {
+        s_settings_interface->SetIntValue("SPU2/Output", "BufferMS", 30);
+    }
+    if (!s_settings_interface->ContainsValue("SPU2/Output", "MinimalOutputLatency")) {
+        s_settings_interface->SetBoolValue("SPU2/Output", "MinimalOutputLatency", true);
+    }
+    if (!s_settings_interface->ContainsValue("SPU2/Stretch", "UseQuickSeek")) {
+        s_settings_interface->SetBoolValue("SPU2/Stretch", "UseQuickSeek", true);
     }
 
     s_settings_interface->Save();
