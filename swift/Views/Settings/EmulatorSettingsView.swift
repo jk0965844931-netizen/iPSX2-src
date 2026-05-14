@@ -94,6 +94,16 @@ struct EmulatorSettingsView: View {
                 Text("Fixes vblank timing loop. Small speedup with no compatibility cost on most games.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
+
+                Toggle("VU Flag Hack", isOn: $settings.vuFlagHack)
+                Text("microVU flag optimization. ~5-10% speedup on VU-heavy games. Safe for most titles.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+
+                Stepper("EE Cycle Skip: \(settings.eeCycleSkip)", value: $settings.eeCycleSkip, in: 0...3)
+                Text("0 = Off. 1-3 = Skip EE cycles (faster, but may cause audio glitches or crashes in some games). Use only if game is unplayably slow.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
             } header: {
                 Text("Speedhacks")
             } footer: {
