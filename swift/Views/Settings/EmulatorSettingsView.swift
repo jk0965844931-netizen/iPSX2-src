@@ -70,17 +70,28 @@ struct EmulatorSettingsView: View {
             }
 
             Section {
-                Stepper("EE Cycle Rate: \(settings.eeCycleRate)", value: $settings.eeCycleRate, in: -3...3)
-                Text("0 = Default. Negative = underclock (stable). Positive = overclock (fast but risky).")
+                Stepper("EE Cycle Rate: \(settings.eeCycleRate > 0 ? "+\(settings.eeCycleRate)" : "\(settings.eeCycleRate)")", value: $settings.eeCycleRate, in: -3...3)
+                Text("0 = Default. -1/-2 = slightly less EE work (more stable, good for most games). +1/+2 = overclock EE (faster but may crash).")
                     .font(.caption)
                     .foregroundStyle(.secondary)
 
                 Toggle("Fast CDVD", isOn: $settings.fastCDVD)
-                Toggle("VU1 Instant", isOn: $settings.vu1Instant)
-                Toggle("Wait Loop Detection", isOn: $settings.waitLoop)
-                Toggle("INTC Stat Hack", isOn: $settings.intcStat)
+                Text("Speeds up disc reads. Recommended ON — disabling may fix rare loading freezes.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
 
-                Text("These are recommended defaults from PCSX2. Disable only if a specific game has issues.")
+                Toggle("VU1 Instant", isOn: $settings.vu1Instant)
+                Text("Runs VU1 calculations instantly rather than cycle-accurate. Big FPS boost on most games.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+
+                Toggle("Wait Loop Detection", isOn: $settings.waitLoop)
+                Text("Skips idle CPU loops. Reduces heat and improves FPS in most games.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+
+                Toggle("INTC Stat Hack", isOn: $settings.intcStat)
+                Text("Fixes vblank timing loop. Small speedup with no compatibility cost on most games.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             } header: {
